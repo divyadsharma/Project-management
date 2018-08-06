@@ -1,30 +1,32 @@
-- if @task.errors.any?
-  #error_explanation
-    %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
-    %ul
-      - @task.errors.full_messages.each do |message|
-        %li= message
+= errors_for(@task) if @task.present?
 = hidden_field_tag 'admin_id', current_user.id
-.field
-  = f.label :title
-  = f.text_field :title
-.field
-  = f.label :description
-  = f.text_area :description
-.field
-  = f.label :complexity
-  = f.number_field :complexity
-.field
-  = f.label :status
-  =f.select :status, Task.statuses.keys.map { |w| [w.humanize, w] }
-.field
-  = f.label :project
-  = f.collection_select :project_id, Project.all, :id, :title, {include_hidden: false}
-.field
-  = f.label :developer
-  = f.collection_select :user_id, Project.first.users, :id, :email, {include_hidden: false}
-.actions
-  = f.submit 'Save'
+.col-lg-6
+  .col-lg-8
+    .field
+      = f.label :title
+      = f.text_field :title, class: 'form-control'
+    %br
+    .field
+      = f.label :description
+      = f.text_area :description, class: 'form-control'
+    %br
+    .field
+      = f.label :complexity
+      = f.number_field :complexity, class: 'form-control'
+    %br
+    .field
+      = f.label :status
+      =f.select :status, Task.statuses.keys.map { |w| [w.humanize, w] }
+    - if Project.count > 0
+      .field
+        = f.label :project
+        = f.collection_select :project_id, Project.all, :id, :title, {include_hidden: false}
+      .field
+        = f.label :developer
+        = f.collection_select :user_id, Project.first.users, :id, :email, {include_hidden: false}
+    .actions
+      = f.submit 'Save', class: 'btn btn-default'
+      = link_to 'Back', admin_user_tasks_path(current_user), class: 'btn btn-default'
 
 :javascript
   $( document ).on('turbolinks:load', function() {

@@ -1,10 +1,10 @@
-class Admin::TasksController < ApplicationController
+class Admin::TasksController < Admin::BaseController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = Task.all.paginate(page: params[:page], per_page: 20)
   end
 
   # GET /tasks/1
@@ -66,7 +66,7 @@ class Admin::TasksController < ApplicationController
     if params[:project_id].present?
       @developers = Project.find_by_id(params[:project_id]).users
       respond_to do |format|
-        format.js 
+        format.js
       end
     end
   end
@@ -76,7 +76,7 @@ class Admin::TasksController < ApplicationController
   end
 
   def project_task_list
-    
+
   end
 
   def pie_data

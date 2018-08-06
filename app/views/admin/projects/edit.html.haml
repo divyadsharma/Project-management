@@ -1,5 +1,8 @@
-%h1 Editing Project
-=form_for @project, url: admin_user_project_path(current_user, @project), method: :put do |form|
-  = render 'form', project: @project, form: form
-/ = link_to 'Show', @project
-= link_to 'Back', admin_user_projects_path
+.row
+  .col-md-12.p-t-15
+    %section.panel
+      %header.panel-heading
+        Edit Project
+      .panel-body
+        = form_for @project, url: admin_user_project_path(current_user, @project), method: :put do |form|
+          = render 'form', project: @project, form: form

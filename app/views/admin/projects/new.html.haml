@@ -1,4 +1,8 @@
-%h1 New Project
-= form_for @project, url: admin_user_projects_path(current_user), method: :post do |form|
-  = render 'form', project: @project, form: form
-= link_to 'Back', admin_user_projects_path
+.row
+  .col-md-12.p-t-15
+    %section.panel
+      %header.panel-heading
+        Create New Project
+      .panel-body
+        = form_for @project, url: admin_user_projects_path(current_user), method: :post do |form|
+          = render 'form', project: @project, form: form

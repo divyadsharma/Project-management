@@ -1,6 +1,8 @@
-%h1 New task
-
-= form_for @task, url: admin_user_tasks_path(current_user), method: :post do |form|
-  = render 'form', f: form
-
-= link_to 'Back', admin_user_tasks_path(current_user)
+.row
+  .col-md-12.p-t-15
+    %section.panel
+      %header.panel-heading
+        New task
+      .panel-body
+        = form_for @task, url: admin_user_tasks_path(current_user), html: {class: 'create_task'}, method: :post do |form|
+          = render 'form', f: form

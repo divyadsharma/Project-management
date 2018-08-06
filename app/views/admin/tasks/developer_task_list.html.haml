@@ -1,28 +1,46 @@
-%h1 Developer Tasks
-%table.table.table-striped
-  %thead
-    %tr
-      %th Developer
-      %th Pending
-      %th In Progress
-      %th Done
-      %th 
+.row
+  %ol.breadcrumb
+    %li
+      %a{:href => "#"}
+        %em.fa.fa-home
+    %li.active Developer Tasks
+.row
+  .col-md-12.p-t-15
+    .panel.panel-default
+      .panel-heading
+        %h4 Developer Tasks Listing
+      .panel-body
+        .x-scrolling-wrapper
+          %table.table.table-bordered.table-hover.table-striped
+            %thead
+              %tr
+                %th.list_id_column Developer
+                %th Pending
+                %th In Progress
+                %th Done
+            %tbody
+              - Developer.all.each do |developer|
+                - tasks = developer.tasks
+                - tasks_by_status = tasks.group_by(&:status)
+                %tr
+                  %td= developer.email
+                  %td
+                    - if tasks_by_status["pending"].present?
+                      - tasks_by_status["pending"].each do |task_list|
+                        = task_list.title
+                        %br
+                  %td
+                    - if tasks_by_status["in_progress"].present?
+                      - tasks_by_status["in_progress"].each do |task_list|
+                        = task_list.title
+                        %br
+                  %td
+                    - if tasks_by_status["done"].present?
+                      - tasks_by_status["done"].each do |task_list|
+                        = task_list.title
+                        %br
 
-  %tbody
-    - Developer.all.each do |developer|
-      %tr
-        %td= developer.email
-        - if developer.tasks.present?
-          - tasks = developer.tasks
-          - tasks.group_by(&:status).each do |status, tasks_list|
-            - if status["pending"].present?
-              - tasks_list.each do |task|
-                %td= task.title
-            - if status["in_progress"].present?
-              - tasks_list.each do |task|
-                %td= task.title
-            - if status["done"].present?
-              - tasks_list.each do |task|
-                %td= task.title
-%br
+
+
+
 

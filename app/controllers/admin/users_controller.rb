@@ -1,4 +1,4 @@
  # Admin side user controller
-class Admin::UsersController < ApplicationController
-  
+class Admin::UsersController < Admin::BaseController
+
 end
