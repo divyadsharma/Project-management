@@ -1,0 +1,30 @@
+%h1 tasks
+= link_to 'Add Task', new_admin_user_task_path(current_user), class: "btn btn-primary pull-right"
+%table.table.table-striped
+  %thead
+    %tr
+      %th Title
+      %th Description
+      %th Complexity
+      %th Status
+      %th Project
+      %th Developer
+      %th
+
+  %tbody
+    - @tasks.each do |task|
+      %tr
+        %td= task.title
+        %td= task.description
+        %td= task.complexity
+        %td= task.status
+        %td= task.project.try(:title)
+        %td= task.user.try(:email)
+        / %td= link_to 'Show', task
+        %td
+          = link_to 'Edit', edit_admin_user_task_path(current_user, task)
+          |
+          = link_to 'Destroy', admin_user_task_path(current_user, task), method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+

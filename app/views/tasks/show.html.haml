@@ -1,0 +1,19 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @task.title
+%p
+  %b Description:
+  = @task.description
+%p
+  %b Complexity:
+  = @task.complexity
+%p
+  %b Status:
+  = @task.status
+%p
+  %b Project:
+  = @task.project.title
+
+= link_to 'Back', user_tasks_path(current_user)

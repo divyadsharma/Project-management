@@ -1,0 +1,22 @@
+%p#notice= notice
+%h1 Projects
+= link_to 'Add Project', new_admin_user_project_path(current_user), class: "btn btn-primary pull-right"
+%table.table.table-striped
+  %thead
+    %tr
+      %th Title
+      %th Description
+      %th
+  %tbody
+    - @projects.each do |project|
+      %tr
+        %td
+          = link_to project.title, admin_user_project_path(current_user, project)
+
+        %td= project.description
+        / %td= link_to 'Show', project
+        %td
+          = link_to 'Edit', edit_admin_user_project_path(current_user, project), class: 'btn btn-primary'
+          |
+          = link_to 'Destroy', admin_user_project_path(current_user, project), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary'
+%br/

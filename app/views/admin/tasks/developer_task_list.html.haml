@@ -1,0 +1,28 @@
+%h1 Developer Tasks
+%table.table.table-striped
+  %thead
+    %tr
+      %th Developer
+      %th Pending
+      %th In Progress
+      %th Done
+      %th 
+
+  %tbody
+    - Developer.all.each do |developer|
+      %tr
+        %td= developer.email
+        - if developer.tasks.present?
+          - tasks = developer.tasks
+          - tasks.group_by(&:status).each do |status, tasks_list|
+            - if status["pending"].present?
+              - tasks_list.each do |task|
+                %td= task.title
+            - if status["in_progress"].present?
+              - tasks_list.each do |task|
+                %td= task.title
+            - if status["done"].present?
+              - tasks_list.each do |task|
+                %td= task.title
+%br
+

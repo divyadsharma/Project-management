@@ -1,0 +1,45 @@
+%h1 Listing tasks
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Title
+      %th Description
+      %th Complexity
+      %th Status
+      %th Project
+      %th
+      %th
+      %th
+
+  %tbody
+    - @tasks.each do |task|
+      %tr
+        %td
+          = link_to task.title, user_task_path(current_user, task)
+        %td= task.description
+        %td= task.complexity
+        = hidden_field_tag 'user_id', current_user.id
+        = hidden_field_tag 'task_id', task.id
+        = form_for task,  url: user_task_path(current_user, task), method: :put, remote: true do |form|
+          %td
+            = form.hidden_field :authenticity_token, value: form_authenticity_token
+            = form.select :status, Task.statuses.keys.map { |w| [w.humanize, w] }
+        %td= task.project.title
+
+%br
+
+:javascript
+  $( document ).on('turbolinks:load', function() {
+    $("#task_status").change(function(){
+      var url = '/users/'+ $("#user_id").val()+'/tasks/'+ $("#task_id").val()
+      $.ajax({
+        url: url,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').last().attr('content'))},
+        dataType: 'script',
+        type: 'PUT',
+        data: {status: $(this).val()},
+        success: function(data){ $("#task_user_id").html(data); }
+      });
+    })
+  })
