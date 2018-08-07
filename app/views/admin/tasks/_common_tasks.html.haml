@@ -1,0 +1,6 @@
+- Task.statuses.keys.each do |status|
+  %td
+    - if tasks_by_status["#{status}"].present?
+      - tasks_by_status["#{status}"].each do |task_list|
+        = task_list.title
+        %br

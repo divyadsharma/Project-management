@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  # associations
   has_many :developer_projects
   has_many :projects, through: :developer_projects
   has_many :tasks

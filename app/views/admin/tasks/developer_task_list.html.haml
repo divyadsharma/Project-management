@@ -1,7 +1,7 @@
 .row
   %ol.breadcrumb
     %li
-      %a{:href => "#"}
+      %a{href: "#"}
         %em.fa.fa-home
     %li.active Developer Tasks
 .row
@@ -19,28 +19,13 @@
                 %th In Progress
                 %th Done
             %tbody
-              - Developer.all.each do |developer|
-                - tasks = developer.tasks
-                - tasks_by_status = tasks.group_by(&:status)
-                %tr
-                  %td= developer.email
-                  %td
-                    - if tasks_by_status["pending"].present?
-                      - tasks_by_status["pending"].each do |task_list|
-                        = task_list.title
-                        %br
-                  %td
-                    - if tasks_by_status["in_progress"].present?
-                      - tasks_by_status["in_progress"].each do |task_list|
-                        = task_list.title
-                        %br
-                  %td
-                    - if tasks_by_status["done"].present?
-                      - tasks_by_status["done"].each do |task_list|
-                        = task_list.title
-                        %br
-
-
-
-
-
+              - developers = Developer.all
+              - if developers.present?
+                - developers.each do |developer|
+                  - tasks = developer.tasks
+                  - tasks_by_status = tasks.group_by(&:status)
+                  %tr
+                    %td= developer.email
+                    = render 'common_tasks', tasks_by_status: tasks_by_status
+              - else
+                No entry found

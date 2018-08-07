@@ -1,30 +1,19 @@
 class Admin::TasksController < Admin::BaseController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:edit, :update, :destroy]
 
-  # GET /tasks
-  # GET /tasks.json
   def index
     @tasks = Task.all.paginate(page: params[:page], per_page: 20)
   end
 
-  # GET /tasks/1
-  # GET /tasks/1.json
-  def show
-  end
-
-  # GET /tasks/new
   def new
     @task = Task.new
   end
 
-  # GET /tasks/1/edit
   def edit
     @developer = @task.try(:user)
-    @projet = @task.try(:project)
+    @project = @task.try(:project)
   end
 
-  # POST /tasks
-  # POST /tasks.json
   def create
     @task = Task.new(task_params)
 
@@ -39,8 +28,6 @@ class Admin::TasksController < Admin::BaseController
     end
   end
 
-  # PATCH/PUT /tasks/1
-  # PATCH/PUT /tasks/1.json
   def update
     respond_to do |format|
       if @task.update(task_params)
@@ -53,8 +40,6 @@ class Admin::TasksController < Admin::BaseController
     end
   end
 
-  # DELETE /tasks/1
-  # DELETE /tasks/1.json
   def destroy
     @task.destroy
     respond_to do |format|
@@ -73,19 +58,16 @@ class Admin::TasksController < Admin::BaseController
   end
 
   def developer_task_list
-
   end
 
   def project_task_list
-
   end
 
   def pie_data
     if params[:project].present?
-      @project_title = Project.find_by_id(params[:project]).title
-      @tasks = Task.where(project_id: params[:project])
-      @task_data = 
-        [['Task', 'task count'], ['In Progress', Task.in_progress(@tasks).count], ['Pending', Task.pending(@tasks).count], ['Done', Task.done(@tasks).count]]
+      @project_title = Project.title(params[:project])
+      @tasks = Task.projects(params[:project])
+      @task_data = Task.pie_data(@tasks)
       respond_to do |format|
         format.html
         format.js
@@ -94,13 +76,12 @@ class Admin::TasksController < Admin::BaseController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_task
       @task = Task.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:title, :description, :complexity, :status, :project_id, :user_id)
+      params.require(:task).permit(:title, :description, :complexity,
+                                   :status, :project_id, :user_id)
     end
 end

@@ -3,7 +3,6 @@ class DeveloperProject < ApplicationRecord
 
   # associations
   belongs_to :project
-  belongs_to :user#, optional: true
+  belongs_to :user
 
-  #scopes
 end

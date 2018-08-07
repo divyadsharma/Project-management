@@ -24,7 +24,6 @@
       .field
         = f.label :developer
         = f.collection_select :user_id, Project.first.users, :id, :email, {include_hidden: false}
-        - byebug
         / = f.select :user_id, options_for_select(Project.first.users.map{|user| [user.email, user.id]}, @developer), {include_hidden: false}
     .actions
       = f.submit 'Save', class: 'btn btn-default'

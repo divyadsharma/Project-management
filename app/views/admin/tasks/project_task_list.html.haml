@@ -1,7 +1,7 @@
 .row
   %ol.breadcrumb
     %li
-      %a{:href => "#"}
+      %a{href: "#"}
         %em.fa.fa-home
     %li.active Project Tasks
 .row
@@ -10,7 +10,7 @@
       .panel-heading
         %h4 Project Task Listing
       .panel-body
-        .x-scrolling-wrapper
+        .x-scrolling-wrappe
           %table.table.table-bordered.table-hover.table-striped
             %thead
               %tr
@@ -19,28 +19,18 @@
                 %th In Progress
                 %th Done
             %tbody
-              - Project.all.each do |project|
-                - tasks = project.tasks
-                - tasks_by_status = tasks.group_by(&:status)
-                %tr
-                  %td
-                    .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :id => "project#{project.id}", :role => "dialog"}
-                    = link_to project.title, pie_data_admin_user_tasks_path(current_user, project: project.id), remote: true
+              - projects = Project.all
+              - if projects.present?
+                - projects.each do |project|
+                  - tasks = project.tasks
+                  - tasks_by_status = tasks.group_by(&:status)
+                  %tr
                     %td
-                      - if tasks_by_status["pending"].present?
-                        - tasks_by_status["pending"].each do |task_list|
-                          = task_list.title
-                          %br
-                    %td
-                      - if tasks_by_status["in_progress"].present?
-                        - tasks_by_status["in_progress"].each do |task_list|
-                          = task_list.title
-                          %br
-                    %td
-                      - if tasks_by_status["done"].present?
-                        - tasks_by_status["done"].each do |task_list|
-                          = task_list.title
-                          %br
-%script{:src => "https://www.gstatic.com/charts/loader.js", :type => "text/javascript"}
+                      .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", id: "project#{project.id}", role: "dialog"}
+                      = link_to project.title, pie_data_admin_user_tasks_path(current_user, project: project.id), remote: true
+                      = render 'common_tasks', tasks_by_status: tasks_by_status
+              - else
+                No entry found
+%script{src: "https://www.gstatic.com/charts/loader.js", type: "text/javascript"}
 :javascript
   google.charts.load('current', {'packages':['corechart']});
