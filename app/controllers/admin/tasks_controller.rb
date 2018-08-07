@@ -20,6 +20,7 @@ class Admin::TasksController < Admin::BaseController
   # GET /tasks/1/edit
   def edit
     @developer = @task.try(:user)
+    @projet = @task.try(:project)
   end
 
   # POST /tasks
@@ -82,7 +83,9 @@ class Admin::TasksController < Admin::BaseController
   def pie_data
     if params[:project].present?
       @project_title = Project.find_by_id(params[:project]).title
-      @tasks = Task.where(project_id: params[:project_id])
+      @tasks = Task.where(project_id: params[:project])
+      @task_data = 
+        [['Task', 'task count'], ['In Progress', Task.in_progress(@tasks).count], ['Pending', Task.pending(@tasks).count], ['Done', Task.done(@tasks).count]]
       respond_to do |format|
         format.html
         format.js

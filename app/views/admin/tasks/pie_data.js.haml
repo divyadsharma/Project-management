@@ -1,3 +1,3 @@
-$("#project#{params[:project]}").append("#{escape_javascript render(partial: 'pie_chart')}");
+$("#project#{params[:project]}").html("#{escape_javascript render(partial: 'pie_chart')}");
 $("#project#{params[:project]}").modal('show');
   

@@ -3,29 +3,28 @@
 %table.table.table-striped
   %thead
     %tr
+      %th Project
       %th Title
       %th Description
       %th Complexity
       %th Status
-      %th Project
-      %th
-      %th
-      %th
 
   %tbody
-    - @tasks.each do |task|
+    - projects = current_user.projects
+    - projects .each do |project|
       %tr
-        %td
-          = link_to task.title, user_task_path(current_user, task)
-        %td= task.description
-        %td= task.complexity
-        = hidden_field_tag 'user_id', current_user.id
-        = hidden_field_tag 'task_id', task.id
-        = form_for task,  url: user_task_path(current_user, task), method: :put, remote: true do |form|
+        %td= project.title
+        - @tasks.each do |task|
           %td
-            = form.hidden_field :authenticity_token, value: form_authenticity_token
-            = form.select :status, Task.statuses.keys.map { |w| [w.humanize, w] }
-        %td= task.project.title
+            = link_to task.title, user_task_path(current_user, task)
+          %td= task.description
+          %td= task.complexity
+          = hidden_field_tag 'user_id', current_user.id
+          = hidden_field_tag 'task_id', task.id
+          = form_for task,  url: user_task_path(current_user, task), method: :put, remote: true do |form|
+            %td
+              = form.hidden_field :authenticity_token, value: form_authenticity_token
+              = form.select :status, Task.statuses.keys.map { |w| [w.humanize, w] }
 
 %br
 

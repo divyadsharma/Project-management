@@ -5,26 +5,14 @@
       %h1=@project_title
     .modal-body
       = hidden_field_tag "project_id", params[:project]
-      = hidden_field_tag "in_progress", @tasks.where(status: "in_progress").count
-      = hidden_field_tag "pending", @tasks.where(status: "pending").count
-      = hidden_field_tag "done", @tasks.where(status: "done").count
-      .pie{:style => "width: 600px; height: 500px;", id: "project_#{params[:project]}"}
-%script{:src => "https://www.gstatic.com/charts/loader.js", :type => "text/javascript"}
+      .pie{:style => "width: 600px; height: 600px;", id: "project_#{params[:project]}"}
 :javascript
-  google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
-
-    var data = google.visualization.arrayToDataTable([
-      ['Task', 'Hours per Day'],
-      ['In Progress',     $("#in_progress").val()],
-      ['Pending',      $("#pending").val()],
-      ['Done',  $("#done").val()]
-    ]);
+    var data = google.visualization.arrayToDataTable(#{raw @task_data});
 
     var options = {
-      title: 'Project Tasks'
     };
     var project_id = $("#project_id").val()
     console.log("project id is :"+project_id)

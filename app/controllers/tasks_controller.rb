@@ -40,8 +40,12 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1
   # PATCH/PUT /tasks/1.json
   def update
-    if params[:status].present?
-      @task.update_attributes(status: params[:status])
+    respond_to do |format|
+      byebug
+      if params[:status].present?
+        @task.update_attributes(status: params[:status])
+      end
+      format.js
     end
     # respond_to do |format|
     #   if @task.update(task_params)

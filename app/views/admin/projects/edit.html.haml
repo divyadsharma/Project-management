@@ -4,5 +4,5 @@
       %header.panel-heading
         Edit Project
       .panel-body
-        = form_for @project, url: admin_user_project_path(current_user, @project), method: :put do |form|
+        = form_for @project, url: admin_user_project_path(current_user, @project), html: {class: 'create_project'}, method: :put do |form|
           = render 'form', project: @project, form: form

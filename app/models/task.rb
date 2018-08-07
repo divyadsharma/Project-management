@@ -14,4 +14,9 @@ class Task < ApplicationRecord
 
   # setting enum
   enum status: [:pending, :in_progress, :done]
+
+  #scope
+  scope :in_progress, ->(tasks){ tasks.where(status: "in_progress") }
+  scope :done, ->(tasks){ tasks.where(status: "done") }
+  scope :pending, ->(tasks){ tasks.where(status: "pending") }
 end
