@@ -10,35 +10,49 @@
       %th Status
 
   %tbody
-    - projects = current_user.projects
-    - projects .each do |project|
+    - @tasks.each do |task|
       %tr
-        %td= project.title
-        - @tasks.each do |task|
+        %td= task.project.title
+        %td
+          = link_to task.title, user_task_path(current_user, task)
+        %td= task.description
+        = hidden_field_tag 'user_id', current_user.id
+        = hidden_field_tag 'task_id', task.id
+        = form_for task,  url: user_task_path(current_user, task), method: :put, remote: true do |form|
           %td
-            = link_to task.title, user_task_path(current_user, task)
-          %td= task.description
-          %td= task.complexity
-          = hidden_field_tag 'user_id', current_user.id
-          = hidden_field_tag 'task_id', task.id
-          = form_for task,  url: user_task_path(current_user, task), method: :put, remote: true do |form|
-            %td
-              = form.hidden_field :authenticity_token, value: form_authenticity_token
-              = form.select :status, Task.statuses.keys.map { |w| [w.humanize, w] }
+            = form.select :complexity, options_for_select((0..30).to_a, selected: task.complexity),{}, {class: 'task_complex', data: {task: task.id}}
+          %td
+            = form.hidden_field :authenticity_token, value: form_authenticity_token
+            = form.select :status, Task.statuses.keys.map { |w| [w.humanize, w] },{}, {data: {id: task.id}}
+          / =task.complexity
 
 %br
-
 :javascript
   $( document ).on('turbolinks:load', function() {
     $("#task_status").change(function(){
       var url = '/users/'+ $("#user_id").val()+'/tasks/'+ $("#task_id").val()
+      debugger
       $.ajax({
         url: url,
         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').last().attr('content'))},
         dataType: 'script',
-        type: 'PUT',
-        data: {status: $(this).val()},
+        method: 'PUT',
+        data: {status: $(this).val(), task_id: $(this).data('task')},
+        success: function(data){ $("#task_user_id").html(data); }
+      });
+    })
+    $(".task_complex").change(function(){
+      var url = '/users/'+ $("#user_id").val()+'/tasks/'+ $("#task_id").val()
+      debugger
+      debugger
+      $.ajax({
+        url: url,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').last().attr('content'))},
+        dataType: 'script',
+        method: 'PUT',
+        data: {complexity: $(this).val(), task_id: $(this).data('task') },
         success: function(data){ $("#task_user_id").html(data); }
       });
     })
   })
+

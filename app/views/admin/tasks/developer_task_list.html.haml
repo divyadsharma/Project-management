@@ -24,8 +24,9 @@
                 - developers.each do |developer|
                   - tasks = developer.tasks
                   - tasks_by_status = tasks.group_by(&:status)
-                  %tr
-                    %td= developer.email
-                    = render 'common_tasks', tasks_by_status: tasks_by_status
+                  - if tasks_by_status.present?
+                    %tr
+                      %td= developer.email
+                      = render 'common_tasks', tasks_by_status: tasks_by_status
               - else
                 No entry found

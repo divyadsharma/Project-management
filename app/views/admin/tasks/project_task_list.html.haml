@@ -24,13 +24,16 @@
                 - projects.each do |project|
                   - tasks = project.tasks
                   - tasks_by_status = tasks.group_by(&:status)
-                  %tr
-                    %td
-                      .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", id: "project#{project.id}", role: "dialog"}
-                      = link_to project.title, pie_data_admin_user_tasks_path(current_user, project: project.id), remote: true
-                      = render 'common_tasks', tasks_by_status: tasks_by_status
+                  - if tasks_by_status.present?
+                    %tr
+                      %td
+                        .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", id: "project#{project.id}", role: "dialog"}
+                        = link_to project.title, pie_data_admin_user_tasks_path(current_user, project: project.id), remote: true
+                        = render 'common_tasks', tasks_by_status: tasks_by_status
               - else
                 No entry found
 %script{src: "https://www.gstatic.com/charts/loader.js", type: "text/javascript"}
 :javascript
-  google.charts.load('current', {'packages':['corechart']});
+  $(document).on('turbolinks:load', function() {
+    google.charts.load('current', {'packages':['corechart']});
+  });

@@ -9,16 +9,14 @@ class TasksController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if params[:status].present?
-        @task.update_attributes(status: params[:status])
-      end
-      format.js
+    if params[:status].present? || params[:complexity].present?
+      @task.update_attributes(status: params[:status], complexity: params[:complexity])
+      @success = true
     end
   end
 
   private
     def set_task
-      @task = Task.find(params[:id])
+      @task = Task.find(params[:task_id] || params[:id])
     end
 end
