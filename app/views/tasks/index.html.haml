@@ -31,7 +31,6 @@
   $( document ).on('turbolinks:load', function() {
     $("#task_status").change(function(){
       var url = '/users/'+ $("#user_id").val()+'/tasks/'+ $("#task_id").val()
-      debugger
       $.ajax({
         url: url,
         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').last().attr('content'))},
@@ -43,8 +42,6 @@
     })
     $(".task_complex").change(function(){
       var url = '/users/'+ $("#user_id").val()+'/tasks/'+ $("#task_id").val()
-      debugger
-      debugger
       $.ajax({
         url: url,
         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').last().attr('content'))},
