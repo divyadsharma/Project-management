@@ -1,0 +1,45 @@
+= errors_for(@task) if @task.present?
+= hidden_field_tag 'admin_id', current_user.id
+.col-lg-6
+  .col-lg-8
+    .field
+      = f.label :title
+      = f.text_field :title, class: 'form-control'
+    %br
+    .field
+      = f.label :description
+      = f.text_area :description, class: 'form-control'
+    %br
+    .field
+      = f.label :complexity
+      = f.number_field :complexity, class: 'form-control'
+    %br
+    .field
+      = f.label :status
+      = f.select :status, Task.statuses.keys.map { |w| [w.humanize, w] }, class: 'form-control'
+    %br
+    - if Project.count > 0
+      .field
+        = f.label :project
+        = f.collection_select :project_id, Project.all, :id, :title, {include_hidden: false}, class: 'form-control'
+      %br
+      .field
+        = f.label :developer
+        = f.collection_select :user_id, @project.present? ? @project.users : Project.first.users, :id, :email, {include_hidden: false}, class: 'form-control'
+      %br
+      = f.submit 'Save', class: 'btn btn-primary'
+      = link_to 'Back', admin_user_tasks_path(current_user), class: 'btn btn-default'
+
+:javascript
+  $( document ).on('turbolinks:load', function() {
+    $("#task_project_id").change(function(){
+      var url = '/admin/users/'+$("#admin_id").val()+'/tasks/list_project_developers'
+      $.ajax({
+        url: url,
+        dataType: 'html',
+        type: 'GET',
+        data: {project_id: $(this).val()},
+        success: function(data){ $("#task_user_id").html(data); }
+      });
+    })
+  })

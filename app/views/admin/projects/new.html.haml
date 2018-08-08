@@ -1,0 +1,8 @@
+.row
+  .col-md-12.p-t-15
+    %section.panel
+      %header.panel-heading
+        Create New Project
+      .panel-body
+        = form_for @project, url: admin_user_projects_path(current_user), html: {class: 'create_project'}, method: :post do |form|
+          = render 'form', project: @project, form: form

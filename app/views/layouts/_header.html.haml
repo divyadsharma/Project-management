@@ -1,0 +1,23 @@
+= csrf_meta_tags
+%nav.navbar.navbar-default.navbar-inverse
+  .container-fluid
+    .navbar-header
+      %a.navbar-brand{href: "#"} Project Management
+    - if current_user.present? && current_user.admin?
+      %ul.nav.navbar-nav
+        %li.active
+          %a{href: admin_user_projects_path(current_user)} Projects lists
+        %li
+          %a{href: admin_user_tasks_path(current_user)} Task lists
+        %li
+          %a{href: developer_task_list_admin_user_tasks_path(current_user)} Developers Task lists
+        %li
+          %a{href: project_task_list_admin_user_tasks_path(current_user)} Projects Task lists
+    .nav
+      - if user_signed_in?
+        %li
+          = link_to 'Logout', destroy_user_session_path, method: :delete, class: "pull-right"
+      - else
+        %li
+          = link_to 'Login', new_user_session_path, class: "pull-right"
+

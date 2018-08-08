@@ -1,0 +1,32 @@
+.row
+  %ol.breadcrumb
+    %li
+      %a{href: "#"}
+        %em.fa.fa-home
+    %li.active Developer Tasks
+.row
+  .col-md-12.p-t-15
+    .panel.panel-default
+      .panel-heading
+        %h4 Developer Tasks Listing
+      .panel-body
+        .x-scrolling-wrapper
+          %table.table.table-bordered.table-hover.table-striped
+            %thead
+              %tr
+                %th.list_id_column Developer
+                %th Pending
+                %th In Progress
+                %th Done
+            %tbody
+              - developers = Developer.all
+              - if developers.present?
+                - developers.each do |developer|
+                  - tasks = developer.tasks
+                  - tasks_by_status = tasks.group_by(&:status)
+                  - if tasks_by_status.present?
+                    %tr
+                      %td= developer.email
+                      = render 'common_tasks', tasks_by_status: tasks_by_status
+              - else
+                No entry found

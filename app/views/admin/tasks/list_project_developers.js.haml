@@ -1,0 +1,4 @@
+- if @developers.present?
+  = select_tag 'task_user_id', options_from_collection_for_select(@developers, "id", "email")
+- else
+  = select_tag 'task_user_id', ''

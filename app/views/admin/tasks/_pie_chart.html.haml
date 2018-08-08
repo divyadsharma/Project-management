@@ -1,0 +1,25 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      %button.close{"data-dismiss" => "modal", :type => "button"} ×
+      %h1=@project_title
+    .modal-body
+      = hidden_field_tag "project_modal_id", params[:project]
+      .pie{:style => "width: 600px; height: 600px;", id: "project_#{params[:project]}"}
+:javascript
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable(#{raw @task_data});
+
+    var options = {
+    };
+    var project_id = $("#project_modal_id").val()
+    console.log("project id is :"+project_id)
+    var chart = new google.visualization.PieChart(document.getElementById("project_"+project_id));
+
+    chart.draw(data, options);
+  }
+
+
+

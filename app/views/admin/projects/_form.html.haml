@@ -1,0 +1,16 @@
+= errors_for(project) if project.present?
+.col-lg-6
+  .col-lg-8
+    .field
+      = form.label :title
+      = form.text_field :title, class: 'form-control'
+    .field
+      = form.label :description
+      = form.text_area :description, class: 'form-control'
+    %br
+    = form.collection_select(:user_ids, Developer.all, :id, :email, {include_hidden: false}, {multiple: true})
+    %br
+    %br
+    .actions
+      = form.submit 'Save', class: 'btn btn-primary'
+      = link_to 'Back', admin_user_projects_path(current_user), class: 'btn btn-default'

@@ -1,0 +1,40 @@
+.row
+  %ol.breadcrumb
+    %li
+      %a{:href => "#"}
+        %em.fa.fa-home
+    %li.active Projects
+.row
+  .col-md-12.p-t-15
+    .panel.panel-default
+      .panel-heading
+        .btn-group.pull-right
+          %a.btn.btn-success.btn-sm{href: new_admin_user_project_path(current_user)} Add Project
+        %h4 Project Listing
+      .panel-body
+        .x-scrolling-wrapper
+          - if @projects.blank?
+            No projects yet
+          - else
+            %table.table.table-bordered.table-hover.table-striped
+              %thead
+                %tr
+                  %th.list_id_column ID
+                  %th Title
+                  %th Description
+                  %th Actions
+              %tbody
+                - @projects.each do |project|
+                  %tr
+                    %td= project.id
+                    %td= project.title
+                    %td= project.description
+                    %td
+                      = link_to edit_admin_user_project_path(current_user, project), class: 'btn btn-sm btn-info' do
+                        .fa.fa-pencil
+                      &nbsp;&nbsp;&nbsp;
+                      = link_to admin_user_project_path(current_user, project), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' do
+                        .fa.fa-trash-o
+      - if @projects.present?
+        = will_paginate @genrs, class: 'apple_pagination'
+

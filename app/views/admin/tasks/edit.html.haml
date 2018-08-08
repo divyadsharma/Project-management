@@ -1,0 +1,10 @@
+.row
+  .col-md-12.p-t-15
+    %section.panel
+      %header.panel-heading
+        Edit task
+      .panel-body
+        = form_for @task, url: admin_user_task_path(current_user, @task), html: {class: 'create_task'}, method: :put do |form|
+          = render 'form', f: form
+
+
