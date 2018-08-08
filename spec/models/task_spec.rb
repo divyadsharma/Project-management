@@ -2,26 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Task, type: :model do
   context "assocations" do
-    # it { should belong_to(:user) }
-    # it { should belong_to(:project) }
-    it 'belongs to user' do
-      relation = described_class.reflect_on_association(:user)
-      expect(relation.macro).to eq :belongs_to
-    end
-
-    it 'belongs to project' do
-      relation = described_class.reflect_on_association(:project)
-      expect(relation.macro).to eq :belongs_to
-    end
-  end
-
-  context "nested attributes" do
-    it { should accept_nested_attributes_for(:users) }
-    it { should accept_nested_attributes_for(:developer_projects) }
+    it { should belong_to(:user) }
+    it { should belong_to(:project) }
   end
 
   context 'enums' do
-    # it { should define_enum_for(:status).with( [:pending, :in_progress, :done]) }
+    it { should define_enum_for(:status).with( [:pending, :in_progress, :done]) }
     let(:status) { [:pending, :in_progress, :done] }
     it 'is not valid with a bad status' do
       expect { build(:task, status: :not_done) }

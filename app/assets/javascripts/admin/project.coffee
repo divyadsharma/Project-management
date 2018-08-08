@@ -1,4 +1,5 @@
 $(document).on 'turbolinks:load', ->
+  $("#project_user_ids").select2()
   $('.create_project').validate
     onkeyup: false
     onfocusout: (element) ->

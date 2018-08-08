@@ -16,7 +16,6 @@ class Admin::TasksController < Admin::BaseController
 
   def create
     @task = Task.new(task_params)
-
     respond_to do |format|
       if @task.save
         format.html { redirect_to admin_user_tasks_path(current_user), notice: 'Task was successfully created.' }

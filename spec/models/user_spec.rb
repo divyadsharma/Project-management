@@ -2,23 +2,9 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   context "assocations" do
-    # it { should have_many(:tasks) }
-    # it { should have_many(:developer_projects) }
-    # it { should have_many(:users) }
-    it 'has many developer_projects' do
-      relation = described_class.reflect_on_association(:developer_projects)
-      expect(relation.macro).to eq :has_many
-    end
-
-    it 'has many projects' do
-      relation = described_class.reflect_on_association(:projects)
-      expect(relation.macro).to eq :has_many
-    end
-
-    it 'has many tasks' do
-      relation = described_class.reflect_on_association(:tasks)
-      expect(relation.macro).to eq :has_many
-    end
+    it { should have_many(:tasks) }
+    it { should have_many(:developer_projects) }
+    it { should have_many(:users) }
   end
 
   context "model operations" do
