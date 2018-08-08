@@ -25,8 +25,8 @@ RSpec.describe TasksController, type: :controller do
 
   describe "PUT #update" do
     it "update a task" do
-      put :update, params: {user_id: @user.id, task:{status: "done"}, task_id: @task.id}
-      expect(response).to redirect_to(admin_user_tasks_path(@user))
+      put :update, params: {user_id: @user.id, status: "done", id: @task.id}, xhr: true
+      expect(response.content_type).to eq "text/javascript"
     end
   end
 end

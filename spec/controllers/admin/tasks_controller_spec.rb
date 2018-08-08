@@ -42,7 +42,7 @@ RSpec.describe Admin::TasksController, type: :controller do
 
   describe "PUT #update" do
     it "update a task" do
-      put :update, params: {user_id: @user.id, task:{title: "task updated title"}, task_id: @task.id}
+      put :update, params: {user_id: @user.id, task:{title: "task updated title"}, id: @task.id}
       expect(flash[:notice]).to be_present
       expect(flash[:notice]).to eq('Task was successfully updated.')
       expect(response).to redirect_to(admin_user_tasks_path(@user))
