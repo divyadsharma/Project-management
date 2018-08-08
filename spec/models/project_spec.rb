@@ -1,35 +1,52 @@
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
-  # it {should belong_to(:store_user)}
-  it "checks project is invalid without title" do
-    project = Project.new()
-    expect(project.valid?).to eq(false)
+  context "assocations" do
+    # it { should have_many(:tasks) }
+    # it { should have_many(:developer_projects) }
+    # it { should have_many(:users) }
+    it 'has many tasks' do
+      relation = described_class.reflect_on_association(:tasks)
+      expect(relation.macro).to eq :has_many
+    end
+
+    it 'has many users' do
+      relation = described_class.reflect_on_association(:users)
+      expect(relation.macro).to eq :has_many
+    end
+
+    it 'has many developer_projects' do
+      relation = described_class.reflect_on_association(:developer_projects)
+      expect(relation.macro).to eq :has_many
+    end
   end
-  it "checks project is invalid with title only" do
-    address = project.new(fname: "Ankur", lname: "Maheshwari")
-    expect(address.valid?).to eq(false)
+
+  context "nested attributes" do
+    it { should accept_nested_attributes_for(:users) }
+    it { should accept_nested_attributes_for(:developer_projects) }
   end
-  it "checks address is valid with all requirements" do
-    address = FactoryBot.create(:address)
-    expect(address.valid?).to eq(true)
-  end
-  it "checks zip is invalid with length not equal to 5" do
-    address = Address.create(fname: "Ankur", lname: "Maheshwari", organization: "macbick", street1: "IT park", street2: "Bhawarkua", city: "Indore", state: "Arkansas", country: "United States of America", zip: "4200", phone: "9294879024")
-    expect(address.valid?).to eq(false)
-  end
-  it "checks phone no. is invalid with length not equal to 10" do
-    address = Address.create(fname: "Ankur", lname: "Maheshwari", organization: "macbick", street1: "IT park", street2: "Bhawarkua", city: "Indore", state: "Arkansas", country: "United States of America", zip: "42001", phone: "9294879")
-    expect(address.valid?).to eq(false)
-  end
-  it "checks the not_deleted scope" do
-    address = Address.new(fname: "Ankur", lname: "Maheshwari", organization: "macbick", street1: "IT park", street2: "Bhawarkua", city: "Indore", state: "Arkansas", country: "United States of America", zip: "42001", phone: "9294879024", deleted: false)
-    address.save
-    expect(Address.not_deleted.include?(address)).to eq(true)
-  end
-  it "checks for address details in a string" do
-    address = Address.new(fname: "Ankur", lname: "Maheshwari", organization: "macbick", street1: "IT park", street2: "Bhawarkua", city: "Indore", state: "Arkansas", country: "United States of America", zip: "42001", phone: "9294879024", deleted: false)
-    address.save
-    expect(address.to_s).to eq([address.fname + address.lname, address.organization, address.street1, address.street2, address.city, address.state, address.country, address.zip, address.phone].join(', '))
+
+  context "model operations" do
+
+    it "checks project is invalid without title and decription" do
+      project = Project.new()
+      expect(project.valid?).to eq(false)
+    end
+
+    it "checks project is invalid with title only" do
+      project = Project.new(title: "Project Title")
+      expect(project.valid?).to eq(false)
+    end
+
+    it "checks project is valid with all requirements" do
+      project = FactoryBot.create(:project)
+      expect(project.valid?).to eq(true)
+    end
+
+    it "checks title scope" do
+      project = FactoryBot.create(:project)
+      project_title = Project.title(project.id)
+      expect(project_title.include?('Project Title')).to eq(true)
+    end
   end
 end
