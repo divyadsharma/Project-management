@@ -1,14 +1,17 @@
 - if current_user.present? && current_user.admin?
   #sidebar-collapse.col-sm-3.col-lg-2.sidebar
     %ul.nav.menu
-      %li.active
+      %li{class: nav_class([admin_user_projects_path(current_user)])}
         %a{href: admin_user_projects_path(current_user)}
           %em.fa.fa-dashboard  
           Projects lists
+      %li{class: nav_class([admin_user_tasks_path(current_user), new_admin_user_task_path(current_user)])}
         %a{href: admin_user_tasks_path(current_user)}
           Task lists
+      %li{class: nav_class([developer_task_list_admin_user_tasks_path(current_user)])}
         %a{href: developer_task_list_admin_user_tasks_path(current_user)}
           Developers Task lists
+      %li{class: nav_class([project_task_list_admin_user_tasks_path(current_user)])}
         %a{href: project_task_list_admin_user_tasks_path(current_user)}
           Projects Task lists
 

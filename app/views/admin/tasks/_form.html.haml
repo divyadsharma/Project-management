@@ -27,7 +27,7 @@
         = f.label :developer
         = f.collection_select :user_id, @project.present? ? @project.users : Project.first.users, :id, :email, {include_hidden: false}, class: 'form-control'
       %br
-      = f.submit 'Save', class: 'btn btn-default'
+      = f.submit 'Save', class: 'btn btn-primary'
       = link_to 'Back', admin_user_tasks_path(current_user), class: 'btn btn-default'
 
 :javascript

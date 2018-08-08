@@ -9,7 +9,7 @@
     .panel.panel-default
       .panel-heading
         .btn-group.pull-right
-          %a.btn.btn-default.btn-sm{href: new_admin_user_project_path(current_user)} Add Project
+          %a.btn.btn-success.btn-sm{href: new_admin_user_project_path(current_user)} Add Project
         %h4 Project Listing
       .panel-body
         .x-scrolling-wrapper
@@ -30,10 +30,10 @@
                     %td= project.title
                     %td= project.description
                     %td
-                      = link_to edit_admin_user_project_path(current_user, project), class: 'btn btn-default btn-sm' do
+                      = link_to edit_admin_user_project_path(current_user, project), class: 'btn btn-sm btn-info' do
                         .fa.fa-pencil
-                      |
-                      = link_to admin_user_project_path(current_user, project), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-default btn-sm' do
+                      &nbsp;&nbsp;&nbsp;
+                      = link_to admin_user_project_path(current_user, project), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' do
                         .fa.fa-trash-o
       - if @projects.present?
         = will_paginate @genrs, class: 'apple_pagination'
