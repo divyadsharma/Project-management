@@ -1,31 +1,42 @@
-%h1 Listing tasks
-
-%table.table.table-striped
-  %thead
-    %tr
-      %th Project
-      %th Title
-      %th Description
-      %th Complexity
-      %th Status
-
-  %tbody
-    - @tasks.each do |task|
-      %tr
-        %td= task.project.title
-        %td
-          = link_to task.title, user_task_path(current_user, task)
-        %td= task.description
-        = hidden_field_tag 'user_id', current_user.id
-        = hidden_field_tag 'task_id', task.id
-        = form_for task,  url: user_task_path(current_user, task), method: :put, remote: true do |form|
-          %td
-            = form.select :complexity, options_for_select((0..30).to_a, selected: task.complexity),{}, {class: 'task_complex', data: {task: task.id}}
-          %td
-            = form.hidden_field :authenticity_token, value: form_authenticity_token
-            = form.select :status, Task.statuses.keys.map { |w| [w.humanize, w] },{}, {data: {id: task.id}}
-          / =task.complexity
-
+.row
+  %ol.breadcrumb
+    %li
+      %a{:href => "#"}
+        %em.fa.fa-home
+    %li.active Tasks
+.row
+  .col-md-12.p-t-15
+    .panel.panel-default
+      .panel-heading
+        Task Listing
+      .panel-body
+        .x-scrolling-wrapper
+          - if @tasks.blank?
+            No tasks yet
+          - else
+            %table.table.table-bordered.table-hover.table-striped
+              %thead
+                %tr
+                  %th.list_id_column Project
+                  %th Title
+                  %th Description
+                  %th Complexity
+                  %th Status
+              %tbody
+                - @tasks.each do |task|
+                  %tr
+                    %td= task.project.title
+                    %td
+                      = link_to task.title, user_task_path(current_user, task)
+                    %td= task.description
+                    = hidden_field_tag 'user_id', current_user.id
+                    = hidden_field_tag 'task_id', task.id
+                    = form_for task,  url: user_task_path(current_user, task), method: :put, remote: true do |form|
+                      %td
+                        = form.select :complexity, options_for_select((0..30).to_a, selected: task.complexity),{}, {class: 'task_complex', data: {task: task.id}}
+                      %td
+                        = form.hidden_field :authenticity_token, value: form_authenticity_token
+                        = form.select :status, Task.statuses.keys.map { |w| [w.humanize, w] },{}, {data: {id: task.id}}
 %br
 :javascript
   $( document ).on('turbolinks:load', function() {
